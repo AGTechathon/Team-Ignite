@@ -50,6 +50,15 @@ const LandingPage = () => {
                 >
                   <option value="en">English</option>
                   <option value="hi">हिंदी</option>
+                  <option value="bn">বাংলা</option>
+                  <option value="ta">தமிழ்</option>
+                  <option value="te">తెలుగు</option>
+                  <option value="mr">मराठी</option>
+                  <option value="gu">ગુજરાતી</option>
+                  <option value="kn">ಕನ್ನಡ</option>
+                  <option value="ml">മലയാളം</option>
+                  <option value="pa">ਪੰਜਾਬੀ</option>
+                  <option value="ur">اردو</option>
                 </select>
               </div>
             </div>
@@ -103,6 +112,15 @@ const LandingPage = () => {
                 >
                   <option value="en">English</option>
                   <option value="hi">हिंदी</option>
+                  <option value="bn">বাংলা</option>
+                  <option value="ta">தமிழ்</option>
+                  <option value="te">తెలుగు</option>
+                  <option value="mr">मराठी</option>
+                  <option value="gu">ગુજરાતી</option>
+                  <option value="kn">ಕನ್ನಡ</option>
+                  <option value="ml">മലയാളം</option>
+                  <option value="pa">ਪੰਜਾਬੀ</option>
+                  <option value="ur">اردو</option>
                 </select>
               </div>
             </div>
