@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  FaPhone, FaPhoneSlash, FaUserMd, FaClock, FaAmbulance, FaInfoCircle,
+  FaMapMarkerAlt, FaPhoneAlt, FaHospitalSymbol, FaCheckCircle, FaTimesCircle
+} from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
-import { FaPhone, FaPhoneSlash, FaUserMd, FaClock, FaAmbulance, FaInfoCircle, FaMapMarkerAlt, FaHospital, FaPhoneAlt } from 'react-icons/fa';
 
 const HospitalCall = () => {
   const { language, translations } = useLanguage();
   const [isCallActive, setIsCallActive] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
-  const [estimatedWaitTime, setEstimatedWaitTime] = useState(5); // in minutes
+  const [estimatedWaitTime] = useState(5); // static wait time
   const [showFirstAid, setShowFirstAid] = useState(false);
-  const [callStatus, setCallStatus] = useState('idle'); // idle, connecting, active, ended
+  const [callStatus, setCallStatus] = useState('idle');
   const [userLocation, setUserLocation] = useState(null);
   const [nearestHospitals, setNearestHospitals] = useState([]);
   const [showEmergencyNumbers, setShowEmergencyNumbers] = useState(false);
 
-  // Emergency numbers for different regions
+  const apiKey = "YOUR_GOOGLE_MAPS_API_KEY"; // 🔴 Replace with your API key
+
   const emergencyNumbers = {
     national: [
       { name: translations.nationalEmergency, number: '112' },
@@ -35,39 +40,72 @@ const HospitalCall = () => {
   useEffect(() => {
     let timer;
     if (isCallActive) {
-      timer = setInterval(() => {
-        setCallDuration(prev => prev + 1);
-      }, 1000);
+      timer = setInterval(() => setCallDuration((prev) => prev + 1), 1000);
     }
     return () => clearInterval(timer);
   }, [isCallActive]);
 
   useEffect(() => {
-    // Get user's location when component mounts
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
+        async (position) => {
+          const coords = {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-          // In a real app, you would fetch nearest hospitals based on coordinates
-          fetchNearestHospitals(position.coords);
+            longitude: position.coords.longitude,
+          };
+          setUserLocation(coords);
+          await fetchNearestHospitals(coords);
         },
-        (error) => {
-          console.error('Error getting location:', error);
-        }
+        (error) => console.error("Location error:", error)
       );
     }
   }, []);
 
-  const fetchNearestHospitals = (coords) => {
-    // Mock data - in a real app, this would be an API call
-    setNearestHospitals([
-      { name: translations.cityGeneralHospital, distance: '2.5 km', number: '1800-123-4567' },
-      { name: translations.communityHealthCenter, distance: '3.8 km', number: '1800-234-5678' },
-      { name: translations.districtHospital, distance: '5.2 km', number: '1800-345-6789' }
-    ]);
+  const fetchNearestHospitals = async ({ latitude, longitude }) => {
+    try {
+      const radius = 5000;
+
+      const nearbyRes = await axios.get(
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+        {
+          params: {
+            location: `${latitude},${longitude}`,
+            radius,
+            type: "hospital",
+            key: apiKey,
+          },
+        }
+      );
+
+      const hospitalsWithDetails = await Promise.all(
+        nearbyRes.data.results.slice(0, 5).map(async (place) => {
+          const detailsRes = await axios.get(
+            "https://maps.googleapis.com/maps/api/place/details/json",
+            {
+              params: {
+                place_id: place.place_id,
+                fields: "name,formatted_phone_number,formatted_address",
+                key: apiKey,
+              },
+            }
+          );
+
+          const details = detailsRes.data.result;
+
+          return {
+            name: details.name || "Unnamed Hospital",
+            number: details.formatted_phone_number || "Not available",
+            address: details.formatted_address || "Address not available",
+            doctorAvailable: Math.random() < 0.6, // mock availability
+            distance: "Nearby",
+          };
+        })
+      );
+
+      setNearestHospitals(hospitalsWithDetails);
+    } catch (err) {
+      console.error("Error fetching hospitals:", err);
+    }
   };
 
   const formatTime = (seconds) => {
@@ -78,7 +116,6 @@ const HospitalCall = () => {
 
   const handleStartCall = () => {
     setCallStatus('connecting');
-    // Simulate connection delay
     setTimeout(() => {
       setIsCallActive(true);
       setCallStatus('active');
@@ -92,9 +129,7 @@ const HospitalCall = () => {
     setCallDuration(0);
   };
 
-  const handleRequestAmbulance = () => {
-    setShowEmergencyNumbers(true);
-  };
+  const handleRequestAmbulance = () => setShowEmergencyNumbers(true);
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
@@ -108,42 +143,51 @@ const HospitalCall = () => {
             </div>
           </div>
 
-          {/* Location Section */}
-          {userLocation && (
+          {userLocation && nearestHospitals.length > 0 && (
             <div className="bg-green-50 rounded-lg p-4 mb-6">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mb-2">
                 <FaMapMarkerAlt className="text-green-500" />
                 <span className="text-gray-700">{translations.yourLocation}</span>
               </div>
-              <div className="mt-2">
-                <h3 className="font-semibold text-gray-800 mb-2">{translations.nearestHospitals}</h3>
-                <div className="space-y-2">
-                  {nearestHospitals.map((hospital, index) => (
-                    <div key={index} className="flex justify-between items-center bg-white p-2 rounded">
-                      <div>
-                        <p className="font-medium">{hospital.name}</p>
-                        <p className="text-sm text-gray-600">{hospital.distance}</p>
-                      </div>
-                      <a href={`tel:${hospital.number}`} className="text-blue-500 hover:text-blue-700">
-                        <FaPhoneAlt />
-                      </a>
+              <h3 className="font-semibold text-gray-800 mb-2">{translations.nearestHospitals}</h3>
+              <div className="space-y-3">
+                {nearestHospitals.map((hospital, index) => (
+                  <div key={index} className="bg-white p-3 rounded shadow flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                      <p className="font-semibold text-gray-800 flex items-center gap-2">
+                        <FaHospitalSymbol className="text-blue-400" /> {hospital.name}
+                      </p>
+                      <p className="text-sm text-gray-600">{hospital.address}</p>
+                      <p className="text-sm text-gray-500 mt-1">📞 {hospital.number}</p>
+                      <p className="text-sm mt-1">
+                        Doctor: {hospital.doctorAvailable ? (
+                          <span className="text-green-600 inline-flex items-center"><FaCheckCircle className="mr-1" /> Available</span>
+                        ) : (
+                          <span className="text-red-600 inline-flex items-center"><FaTimesCircle className="mr-1" /> Not Available</span>
+                        )}
+                      </p>
                     </div>
-                  ))}
-                </div>
+                    <a href={`tel:${hospital.number}`} className="mt-2 md:mt-0 text-blue-500 hover:text-blue-700 flex items-center">
+                      <FaPhoneAlt className="mr-1" /> Call
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Call Status and Wait Time */}
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <FaClock className="text-blue-500" />
                 <span className="text-gray-700">
-                  {callStatus === 'idle' ? translations.estimatedWaitTime.replace('{{time}}', estimatedWaitTime) : 
-                   callStatus === 'connecting' ? translations.connecting :
-                   callStatus === 'active' ? translations.callDuration.replace('{{time}}', formatTime(callDuration)) :
-                   translations.callEnded}
+                  {callStatus === 'idle'
+                    ? translations.estimatedWaitTime.replace('{{time}}', estimatedWaitTime)
+                    : callStatus === 'connecting'
+                    ? translations.connecting
+                    : callStatus === 'active'
+                    ? translations.callDuration.replace('{{time}}', formatTime(callDuration))
+                    : translations.callEnded}
                 </span>
               </div>
               {callStatus === 'idle' && (
@@ -152,12 +196,11 @@ const HospitalCall = () => {
             </div>
           </div>
 
-          {/* Call Controls */}
           <div className="flex justify-center space-x-4 mb-6">
             {!isCallActive ? (
               <button
                 onClick={handleStartCall}
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full flex items-center space-x-2 transition-colors"
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full flex items-center space-x-2"
                 disabled={callStatus === 'connecting'}
               >
                 <FaPhone />
@@ -166,7 +209,7 @@ const HospitalCall = () => {
             ) : (
               <button
                 onClick={handleEndCall}
-                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full flex items-center space-x-2 transition-colors"
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full flex items-center space-x-2"
               >
                 <FaPhoneSlash />
                 <span>{translations.endCall}</span>
@@ -174,25 +217,23 @@ const HospitalCall = () => {
             )}
           </div>
 
-          {/* Emergency Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <button
               onClick={handleRequestAmbulance}
-              className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2 transition-colors"
+              className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2"
             >
               <FaAmbulance />
               <span>{translations.requestAmbulance}</span>
             </button>
             <button
               onClick={() => setShowFirstAid(!showFirstAid)}
-              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-4 py-3 rounded-lg flex items-center space-x-2 transition-colors"
+              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-4 py-3 rounded-lg flex items-center space-x-2"
             >
               <FaInfoCircle />
               <span>{translations.showFirstAid}</span>
             </button>
           </div>
 
-          {/* Emergency Numbers */}
           {showEmergencyNumbers && (
             <div className="bg-red-50 rounded-lg p-4 mb-6">
               <h3 className="font-semibold text-red-800 mb-4">{translations.emergencyNumbers}</h3>
@@ -216,7 +257,6 @@ const HospitalCall = () => {
             </div>
           )}
 
-          {/* First Aid Instructions */}
           {showFirstAid && (
             <div className="bg-yellow-50 rounded-lg p-4 mb-6">
               <h3 className="font-semibold text-yellow-800 mb-2">{translations.firstAidInstructions}</h3>
@@ -242,10 +282,11 @@ const HospitalCall = () => {
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
   );
 };
 
-export default HospitalCall; 
+export default HospitalCall;
