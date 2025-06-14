@@ -4,6 +4,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import LandingPage from './components/LandingPage';
 import VoiceChat from './components/VoiceChat';
 import PersonalAssistant from './components/PersonalAssistant';
+import Scheme from "./components/Scheme";
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/voice-chat" element={<VoiceChat />} />
             <Route path="/assistant" element={<PersonalAssistant />} />
+            <Route path="/schemes" element={<Scheme />} />
           </Routes>
         </div>
       </LanguageProvider>
