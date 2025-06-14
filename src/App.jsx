@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
-import VoiceChat from "./components/VoiceChat";
+import VoiceChat from "./components/setsection/VoiceChat";
 
 const App = () => {
   return (
