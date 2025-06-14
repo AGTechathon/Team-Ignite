@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import LandingPage from './components/LandingPage';
-import VoiceChat from './components/VoiceChat';
+//import VoiceChat from './components/VoiceChat';
+import Symptom from './components/Symptom';
 import PersonalAssistant from './components/PersonalAssistant';
 import Scheme from "./components/Scheme";
 import HospitalCall from './components/HospitalCall';
@@ -15,7 +16,8 @@ function App() {
         <div className="min-h-screen bg-gray-100">
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/voice-chat" element={<VoiceChat />} />
+            {/* <Route path="/voice-chat" element={<VoiceChat />} /> */}
+            <Route path="/voice-chat" element={<Symptom />} />
             <Route path="/assistant" element={<PersonalAssistant />} />
             <Route path="/schemes" element={<Scheme />} />
             <Route path="/hospital-call" element={<HospitalCall />} />
