@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage';
 import VoiceChat from './components/VoiceChat';
 import PersonalAssistant from './components/PersonalAssistant';
 import Scheme from "./components/Scheme";
+import HospitalCall from './components/HospitalCall';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/voice-chat" element={<VoiceChat />} />
             <Route path="/assistant" element={<PersonalAssistant />} />
             <Route path="/schemes" element={<Scheme />} />
+            <Route path="/hospital-call" element={<HospitalCall />} />
           </Routes>
         </div>
       </LanguageProvider>
