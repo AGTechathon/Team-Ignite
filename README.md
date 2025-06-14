@@ -1,12 +1,88 @@
-# React + Vite
+# Rural Healthcare Multilingual AI Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A voice-based AI healthcare assistant designed for rural communities in India, supporting multiple local languages for better healthcare accessibility.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Voice-based interaction
+- Support for multiple Indian languages:
+  - Hindi
+  - Marathi
+  - Kannada
+  - Tamil
+  - Telugu
+  - Gujarati
+  - Bengali
+  - Punjabi
+  - Malayalam
+- Emergency response system
+- Health condition assessment
+- First aid guidance
+- Medical emergency protocols
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd Team-Ignite
+```
+
+2. Install dependencies:
+```bash
+pip install -r python/requirements.txt
+```
+
+3. Create a `.env` file in the python directory with your API keys:
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+4. Run the server:
+```bash
+cd python
+python server.py
+```
+
+5. In a new terminal, run the client:
+```bash
+cd python
+python main.py
+```
+
+## Usage
+
+1. Start the application
+2. Speak your health concern in any supported Indian language
+3. The AI will:
+   - Detect your language
+   - Assess if it's an emergency
+   - Provide immediate actions
+   - Give first aid instructions
+   - List warning signs
+   - Recommend when to seek medical help
+
+## Project Structure
+
+```
+Team-Ignite/
+├── python/
+│   ├── main.py           # Client application
+│   ├── server.py         # Server implementation
+│   ├── multilingual_handler.py  # Language handling
+│   └── requirements.txt  # Python dependencies
+├── .gitignore
+└── README.md
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
