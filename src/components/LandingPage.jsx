@@ -161,6 +161,14 @@ const LandingPage = () => {
                 {translations.viewSchemes}
               </Link>
             </div>
+            <div className="mt-3 sm:mt-0">
+              <Link
+                to="/offlineChat"
+                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+              >
+                {translations.viewOfflineChat}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   FaMapMarkerAlt, FaPhoneAlt, FaHospitalSymbol, FaCheckCircle, FaTimesCircle
 } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import { Link } from 'react-router-dom';
 
 const HospitalCall = () => {
   const { language, translations } = useLanguage();
@@ -184,10 +185,10 @@ const HospitalCall = () => {
                   {callStatus === 'idle'
                     ? translations.estimatedWaitTime.replace('{{time}}', estimatedWaitTime)
                     : callStatus === 'connecting'
-                    ? translations.connecting
-                    : callStatus === 'active'
-                    ? translations.callDuration.replace('{{time}}', formatTime(callDuration))
-                    : translations.callEnded}
+                      ? translations.connecting
+                      : callStatus === 'active'
+                        ? translations.callDuration.replace('{{time}}', formatTime(callDuration))
+                        : translations.callEnded}
                 </span>
               </div>
               {callStatus === 'idle' && (

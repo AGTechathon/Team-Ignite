@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from '../context/LanguageContext';
 
 const Scheme = () => {
+  const { translations } = useLanguage();
   const schemes = [
     {
       name: "Ayushman Bharat Yojana",
@@ -82,7 +84,7 @@ const Scheme = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
                 <span className="ml-2 text-xl font-bold text-gray-800">
-                  SarathiAi
+                  ArogyaAi
                 </span>
               </div>
             </div>
@@ -92,19 +94,19 @@ const Scheme = () => {
                 to="/"
                 className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
-                Home
+                {translations.home}
               </Link>
               <Link
                 to="/schemes"
                 className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
-                Government Schemes
+                {translations.governmentSchemes}
               </Link>
               <Link
                 to="/voice-chat"
                 className="text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
               >
-                Voice Chat
+                {translations.voiceChat}
               </Link>
             </div>
           </div>
@@ -114,10 +116,10 @@ const Scheme = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-2">
-          Government Health Schemes
+          {translations.governmentSchemes}
         </h1>
         <p className="text-gray-600 text-center mb-8">
-          Empowering lives through accessible healthcare
+          {translations.schemesDesc}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -132,7 +134,7 @@ const Scheme = () => {
                 </h2>
                 <p className="text-gray-600 mb-4">{scheme.description}</p>
                 <p className="text-gray-700 font-medium">
-                  <span className="font-bold">Eligibility:</span>{" "}
+                  <span className="font-bold">{translations.eligibility}:</span>{" "}
                   {scheme.eligibility}
                 </p>
                 <a
@@ -141,7 +143,7 @@ const Scheme = () => {
                   rel="noopener noreferrer"
                   className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300"
                 >
-                  Visit Official Site
+                  {translations.visitOfficialSite}
                 </a>
               </div>
             </div>
