@@ -48,6 +48,39 @@ A voice-based AI healthcare assistant designed for rural communities in India, s
 - First aid guidance
 - Medical emergency protocols
 
+---
+
+## 🚀 Features
+
+- ✅ Multilingual support (English, Hindi, Marathi)
+- 📞 Emergency call system (ambulance/hospital)
+- 👨‍⚕️ Doctor information cards with icons
+- 🧠 Smart Python server-client messaging system
+- 📢 Health scheme awareness for rural users
+- 🎯 User-friendly interface for low-literacy users
+
+---
+
+
+
+## 💻 Frontend Setup (React + Vite)
+
+### Prerequisites:
+- Node.js v16+
+- npm
+
+### Steps:
+
+```bash
+# Clone the repo
+git clone https://github.com/AGTechathon/Team-Ignite.git
+cd Team-Ignite
+
+# Go to frontend (src folder is inside root)
+npm install
+npm run dev
+
+
 ## Setup
 
 1. Clone the repository:
@@ -92,29 +125,37 @@ python main.py
 
 ## Project Structure
 
-Team-Ignite/
-├── python/ # Python socket communication module
-│ ├── main.py # Client-side script (user input + sending data)
-│ ├── server.py # Server-side script (receives and processes)
-│ ├── multilingual_handler.py # Handles translation & language detection
-│ └── requirements.txt # Python dependencies
-│
-├── public/ # Vite static files
-│
-├── src/ # React frontend
-│ ├── components/ # UI components (DoctorCard, Call Buttons, etc.)
-│ ├── context/ # LanguageContext for switching languages
-│ ├── pages/ # HomePage view
-│ ├── translations/ # Text files for en, hi, mr
-│ ├── App.jsx # Root component
-│ └── main.jsx # React entry point
-│
-├── tailwind.config.js # Tailwind CSS config
-├── postcss.config.js # PostCSS setup
-├── vite.config.js # Vite config
-├── package.json # Project metadata & scripts
-├── .gitignore
-└── README.md
+
+---
+
+## 🚀 Features
+
+- ✅ Multilingual support (English, Hindi, Marathi)
+- 📞 Emergency call system (ambulance/hospital)
+- 👨‍⚕️ Doctor information cards with icons
+- 🧠 Smart Python server-client messaging system
+- 📢 Health scheme awareness for rural users
+- 🎯 User-friendly interface for low-literacy users
+
+---
+
+## 💻 Frontend Setup (React + Vite)
+
+### Prerequisites:
+- Node.js v16+
+- npm
+
+### Steps:
+
+```bash
+# Clone the repo
+git clone https://github.com/AGTechathon/Team-Ignite.git
+cd Team-Ignite
+
+# Go to frontend (src folder is inside root)
+npm install
+npm run dev
+
 
 yaml
 Copy
